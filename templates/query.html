@@ -1,0 +1,210 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Query Records Onwards of 1993</legend>
+
+<div style="padding: 25px; margin: 30px; border: 4px solid black;">
+<!-- Select Basic -->
+<h3 style="margin: 20px;"> Basic Search: Searching by One's Animal Type </h3>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Select Animal Type</label> 
+  <div style="position: relative; left: 40px;" class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control">
+      <option value="Rooster">Rooster</option>
+      <option value="Chicken">Chicken</option>
+      <option value="Goat">Goat</option>
+      <option value="Lamb">Lamb</option>
+      <option value="Birds">Birds</option>
+      <option value="Dove">Dove</option>
+      <option value="Pigeon">Pigeon</option>
+      <option value="Pig">Pig</option>
+      <option value="Rat">Rat</option>
+      <option value="Not Specified">Other</option>
+    </select>
+  </div>
+</div>
+
+<!-- Button -->
+<div style="position:relative; left: 290px; bottom: 30px;" class="form-group">
+  <label class="col-md-4 control-label" for="singlebutton"></label>
+  <div class="col-md-4">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+
+<form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Query Records Onwards of 1993</legend>
+
+<!-- Multiple Radios -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="radios">Select Multiple Animal Types</label>
+  <div class="col-md-4">
+  <div class="radio">
+    <label for="radios-0">
+      <input type="radio" name="radios" id="radios-0" value="Rooster" checked="checked">
+      Rooster
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-1">
+      <input type="radio" name="radios" id="radios-1" value="Chicken">
+      Chicken
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-2">
+      <input type="radio" name="radios" id="radios-2" value="Goat">
+      Goat
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-3">
+      <input type="radio" name="radios" id="radios-3" value="Lamb">
+      Lamb
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-4">
+      <input type="radio" name="radios" id="radios-4" value="Pig">
+      Pig
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-5">
+      <input type="radio" name="radios" id="radios-5" value="Rat">
+      Rat
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-6">
+      <input type="radio" name="radios" id="radios-6" value="Bird">
+      Bird
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-7">
+      <input type="radio" name="radios" id="radios-7" value="Dove">
+      Dove
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-8">
+      <input type="radio" name="radios" id="radios-8" value="Not Specified">
+      Other
+    </label>
+	</div>
+  </div>
+</div>
+
+<!-- Multiple Radios -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="radios">Select Multiple Body Parts</label>
+  <div class="col-md-4">
+  <div class="radio">
+    <label for="radios-0">
+      <input type="radio" name="radios" id="radios-0" value="head" checked="checked">
+      Head
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-1">
+      <input type="radio" name="radios" id="radios-1" value="legs">
+      Legs
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-2">
+      <input type="radio" name="radios" id="radios-2" value="head and body">
+      Head and Body
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-3">
+      <input type="radio" name="radios" id="radios-3" value="body without head">
+      Body without Head
+    </label>
+	</div>
+  </div>
+</div>
+
+<!-- Multiple Radios -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="radios">Select Multiple Priorities</label>
+  <div class="col-md-4">
+  <div class="radio">
+    <label for="radios-0">
+      <input type="radio" name="radios" id="radios-0" value="High" checked="checked">
+      High
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-1">
+      <input type="radio" name="radios" id="radios-1" value="Normal">
+      Normal
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-2">
+      <input type="radio" name="radios" id="radios-2" value="Low">
+      Low
+    </label>
+	</div>
+  </div>
+</div>
+
+<!-- Multiple Radios -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="radios">Select Multiple Boroughs</label>
+  <div class="col-md-4">
+  <div class="radio">
+    <label for="radios-0">
+      <input type="radio" name="radios" id="radios-0" value="Manhattan" checked="checked">
+      Manhattan
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-1">
+      <input type="radio" name="radios" id="radios-1" value="Brooklyn">
+      Brooklyn
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-2">
+      <input type="radio" name="radios" id="radios-2" value="Queens">
+      Queens
+    </label>
+	</div>
+  <div class="radio">
+    <label for="radios-3">
+      <input type="radio" name="radios" id="radios-3" value="Bronx">
+      The Bronx
+    </label>
+	</div>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="singlebutton"></label>
+  <div class="col-md-4">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit + Query</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+{% endblock %}
