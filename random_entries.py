@@ -87,7 +87,7 @@ def get_random_location(division):
 def get_google_maps_location(latLonTuple):
 	import requests
 	urlstring = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(latLonTuple[0]) + "," + str(latLonTuple[1]) + "&key=AIzaSyCH4LUsV1b_S9iYRnX6T3Fq9pyJ0_qhXFs" 
-	formatted_address = requests.get(urlstring).json()['results'][0]['formatted_address']
+	formatted_address = requests.get(urlstring, verify=True).json()['results'][0]['formatted_address']
 	print str(latLonTuple) + "-->" + formatted_address + "\n"
 	return formatted_address
 
