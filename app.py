@@ -120,4 +120,4 @@ def test_message(message):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, port=6000,debug=False)
