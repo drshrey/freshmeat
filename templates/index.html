@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+    {% block head %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Meat</title>
+    <script type="text/javascript" charset="utf-8">
+        var imgDir = '/static/img';
+        var animalImages = {
+            'Birds': imgDir + '/bird.png',
+            'Chicken': imgDir + '/chicken-hen.jpg',
+            'Dove': imgDir + '/dove.jpg',
+            'Pig': imgDir + '/pig.jpg',
+            'Pigeon': imgDir + '/pigeon.png',
+            'Rooster': imgDir + '/rooster.png',
+            'Not Specified': imgDir + '/unknown.gif',
+            'Lamb': imgDir + '/lamb.svg',
+            'Rat': imgDir + '/rat.jpg',
+            'Goat': imgDir + '/goat.jpg'
+        }
+
+        $(document).ready(function(){
+            namespace = '/test'; // change to an empty string to use the global namespace
+
+            // the socket.io documentation recommends sending an explicit package upon connection
+            // this is specially important when using the global namespace
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('murder', function(msg) {
+                msg = msg.data
+                //Parse details
+                var murder = {
+                    animals : msg[1].split("&"),
+                    quantity : msg[2],
+                    body_part_found : msg[3],
+                    date_started : msg[4],
+                    date_closed : msg[5],
+                    source : msg[6],
+                    division : msg[7],
+                    form : msg[8],
+                    status : msg[9],
+                    priority : msg[10],
+                    location : msg[11],
+                    complaint_type : msg[12],
+                    resolution : msg[13]
+                }
+        murder.location = murder.location.replace(/"/g, "");
+                var imgPart = '';
+
+                for(var i = 0; i < murder.animals.length; i++){
+                    tail = ""
+                    if(i == murder.animals.length - 1)
+                        tail = "></img>"
+                    else
+                        tail = "></img> <b>+<b>"
+                    imgPart += "<img height=10% width=10% src="+animalImages[murder.animals[i]]+ tail;
+                }
+
+                var description = murder.quantity + ' parts found, ' + murder.body_part_found +
+                                '<p style="position: relative; left:440px; bottom:50px;"> ' + murder.date_started + ' -> ' + murder.date_closed + '</p>where: <a href=http://maps.google.com/?q=' + encodeURIComponent(murder.location) + '>' +
+                                murder.location + '</a>' + '<br>resolution: ' + murder.resolution
+
+                $('<div class="row"> <h4>' + imgPart + description + ' </h4> </div>').hide().prependTo('#feed').slideDown('fast');
+            });
+        });
+    </script>
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    <div class="container-fluid" id="feed" ></div>
+    {% endblock %}
+</body>
+</html>

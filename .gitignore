@@ -1,0 +1,5 @@
+db_init.py
+*.pyc
+fill_db.py
+creds.txt
+.DS_Store

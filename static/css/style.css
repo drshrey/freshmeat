@@ -1,0 +1,25 @@
+#title {
+	position: relative;
+	left: 40%;
+}
+
+#feed {
+	border: solid black 2px;
+	height: 1000px;
+	width: 650px;
+	position: relative;
+	left: 25%;
+	overflow: scroll;
+}
+
+.row{
+	width: 640px;
+	height:150px;
+	padding: 20px;
+	border: 5px solid black;
+}
+
+#navbar{
+	position: relative;
+	left: 50px;
+}
