@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<form class="form-horizontal">
+<form class="form-horizontal" action="/basic_query_request" method="GET">
 <fieldset>
 
 <!-- Form Name -->
@@ -12,9 +12,9 @@
 <!-- Select Basic -->
 <h3 style="margin: 20px;"> Basic Search: Searching by One's Animal Type </h3>
 <div class="form-group">
-  <label class="col-md-4 control-label" for="selectbasic">Select Animal Type</label> 
+  <label class="col-md-4 control-label" for="animaltype">Select Animal Type</label> 
   <div style="position: relative; left: 40px;" class="col-md-4">
-    <select id="selectbasic" name="selectbasic" class="form-control">
+    <select id="selectbasic" name="animal" class="form-control">
       <option value="Rooster">Rooster</option>
       <option value="Chicken">Chicken</option>
       <option value="Goat">Goat</option>
@@ -33,7 +33,7 @@
 <div style="position:relative; left: 290px; bottom: 30px;" class="form-group">
   <label class="col-md-4 control-label" for="singlebutton"></label>
   <div class="col-md-4">
-    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+    <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
   </div>
 </div>
 
@@ -45,31 +45,31 @@
 
 
 
-<form class="form-horizontal">
+<form class="form-horizontal" action="/query" method="GET">
 <fieldset>
 <div style="position:relative; float:left; border: 4px solid black; margin: 30px; padding: 25px; width: 1000px;">
 <h3> Advanced Search </h3>
 
 <!-- Multiple Checkboxes (inline) -->
 <div style="border: 2px black solid; margin: 30px; padding: 20px; height: 200px;" class="form-group">
-  <label class="col-md-4 control-label" for="checkboxes"><b>Select Cities</b></label><br>
+  <label class="col-md-4 control-label" for="cities"><b>Select Cities</b></label><br>
   <div style="position:relative; float:right;" class="col-md-4">
   <br>
     <div style="position:relative; right:780px; ">
-    <label class="checkbox-inline" for="checkboxes-0">
-      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="Brooklyn">
+    <label class="checkbox-inline" for="city-0">
+      <input type="checkbox" name="city0" id="city-0" value="Brooklyn">
       Brooklyn
     </label>
-    <label class="checkbox-inline" for="checkboxes-1">
-      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="Manhattan">
+    <label class="checkbox-inline" for="city-1">
+      <input type="checkbox" name="city1" id="city-1" value="Manhattan">
       Manhattan
     </label>
-    <label class="checkbox-inline" for="checkboxes-2">
-      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="Queens">
+    <label class="checkbox-inline" for="city-2">
+      <input type="checkbox" name="city2" id="city-2" value="Queens">
       Queens
     </label>
-    <label class="checkbox-inline" for="checkboxes-3">
-      <input type="checkbox" name="checkboxes" id="checkboxes-3" value="Bronx">
+    <label class="checkbox-inline" for="city-3">
+      <input type="checkbox" name="city3" id="city-3" value="Bronx">
       The Bronx
     </label>
     </div>
@@ -85,39 +85,39 @@
   <br>
   <br>
     <label class="checkbox-inline" for="checkboxes-0">
-      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="Bird">
+      <input type="checkbox" name="animal0" id="animal-0" value="Bird">
       Bird
     </label>
     <label class="checkbox-inline" for="checkboxes-1">
-      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="Rooster">
+      <input type="checkbox" name="animal1" id="animal-1" value="Rooster">
       Rooster
     </label>
     <label class="checkbox-inline" for="checkboxes-2">
-      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="Lamb">
+      <input type="checkbox" name="animal2" id="animal-2" value="Lamb">
       Lamb
     </label>
     <label class="checkbox-inline" for="checkboxes-3">
-      <input type="checkbox" name="checkboxes" id="checkboxes-3" value="Dove">
+      <input type="checkbox" name="animal3" id="animal-3" value="Dove">
       Dove
     </label>
     <label class="checkbox-inline" for="checkboxes-4">
-      <input type="checkbox" name="checkboxes" id="checkboxes-4" value="Chicken">
+      <input type="checkbox" name="animal4" id="animal-4" value="Chicken">
       Chicken
     </label>
     <label class="checkbox-inline" for="checkboxes-5">
-      <input type="checkbox" name="checkboxes" id="checkboxes-5" value="Pigeon">
+      <input type="checkbox" name="animal5" id="animal-5" value="Pigeon">
       Pigeon
     </label>
     <label class="checkbox-inline" for="checkboxes-6">
-      <input type="checkbox" name="checkboxes" id="checkboxes-6" value="Pig">
+      <input type="checkbox" name="animal6" id="animal-6" value="Pig">
       Pig
     </label>
     <label class="checkbox-inline" for="checkboxes-7">
-      <input type="checkbox" name="checkboxes" id="checkboxes-7" value="Rat">
+      <input type="checkbox" name="animal6" id="animal-7" value="Rat">
       Rat
     </label>
     <label class="checkbox-inline" for="checkboxes-8">
-      <input type="checkbox" name="checkboxes" id="checkboxes-8" value="Not Specified">
+      <input type="checkbox" name="animal7" id="animal-8" value="Not Specified">
       Other
     </label>
   </div>
@@ -130,17 +130,17 @@
   <br>
   <br>
     <label class="checkbox-inline" for="checkboxes-0">
-      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="High">
+      <input type="checkbox" name="priority0" id="priority-0" value="High">
       High
     </label>
     <br>
     <label class="checkbox-inline" for="checkboxes-1">
-      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="Normal">
+      <input type="checkbox" name="priority1" id="priority-1" value="Normal">
       Normal
     </label>
     <br>
     <label class="checkbox-inline" for="checkboxes-2">
-      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="Low">
+      <input type="checkbox" name="priority2" id="priority-2" value="Low">
       Low
     </label>
   </div>
@@ -153,22 +153,22 @@
     <br>
   <br>
     <label class="checkbox-inline" for="checkboxes-0">
-      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="head">
+      <input type="checkbox" name="bodypart0" id="bodypart-0" value="head">
       Head
     </label>
     <br>
     <label class="checkbox-inline" for="checkboxes-1">
-      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="legs">
+      <input type="checkbox" name="bodypart1" id="bodypart-1" value="legs">
       Legs
     </label>
     <br>
     <label class="checkbox-inline" for="checkboxes-2">
-      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="head and body">
+      <input type="checkbox" name="bodypart2" id="bodypart-2" value="head and body">
       Head and Body
     </label>
     <br>
     <label class="checkbox-inline" for="checkboxes-3">
-      <input type="checkbox" name="checkboxes" id="checkboxes-3" value="body without head">
+      <input type="checkbox" name="bodypart3" id="bodypart-3" value="body without head">
       Body without Head
     </label>
   </div>
@@ -182,21 +182,21 @@
   <br>
   <div class="checkbox">
     <label for="checkboxes-0">
-      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="The Department of Parks and Recreation has completed the requested work order and corrected the problem.">
+      <input type="checkbox" name="resolution0" id="resolution-0" value="The Department of Parks and Recreation has completed the requested work order and corrected the problem.">
       The Department of Parks and Recreation has completed the requested work order and corrected the problem.
     </label>
 	</div>
 	<br>
   <div class="checkbox">
     <label for="checkboxes-1">
-      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="No action was taken because the Department of Parks and Recreation determined that the issue reported was out of its jurisdiction.">
+      <input type="checkbox" name="resolution1" id="resolution-1" value="No action was taken because the Department of Parks and Recreation determined that the issue reported was out of its jurisdiction.">
       No action was taken because the Department of Parks and Recreation determined that the issue reported was out of its jurisdiction.
     </label>
 	</div>
 	<br>
   <div class="checkbox">
     <label for="checkboxes-2">
-      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="The condition was determined to be an issue appropriate for handling by an alternate entity. The Department of Parks and Recreation has notified the appropriate resource.">
+      <input type="checkbox" name="resolution2" id="resolution-2" value="The condition was determined to be an issue appropriate for handling by an alternate entity. The Department of Parks and Recreation has notified the appropriate resource.">
       The condition was determined to be an issue appropriate for handling by an alternate entity. The Department of Parks and Recreation has notified the appropriate resource.
     </label>
 	</div>

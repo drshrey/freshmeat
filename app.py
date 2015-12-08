@@ -46,9 +46,10 @@ elif async_mode == 'gevent':
 
 import time
 from threading import Thread
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
+from db_init import Murder
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -63,7 +64,6 @@ def background_thread():
         # Make random entry 
         from random_entries import create_entries
         import fn
-        from db_init import Murder
         import random
         import mysql.connector
 
@@ -95,9 +95,20 @@ def index():
         thread.start()
     return render_template('index.html')
 
-@app.route('/query')
+@app.route('/query', methods=['GET'])
 def query():
+    if request.method == 'GET':
+        print dir(request)
+        print request.get_json()
     return render_template('query.html')
+
+@app.route('/basic_query_request', methods=['GET'])
+def query_request():
+    query = Murder.select().where(Murder.animal == request.args.get("animal"))
+    queries = []
+    for x in query:
+        queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed))
+    return jsonify({"message": queries})
 
 @app.route('/map')
 def map():
