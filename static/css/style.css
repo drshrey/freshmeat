@@ -14,7 +14,7 @@
 
 .row{
 	width: 640px;
-	height:150px;
+	height:auto;
 	padding: 20px;
 	border: 5px solid black;
 	position:relative;
