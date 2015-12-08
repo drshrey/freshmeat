@@ -59,7 +59,7 @@ def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        time.sleep(45)
+        time.sleep(10)
         # Make random entry 
         from random_entries import create_entries
         import fn
