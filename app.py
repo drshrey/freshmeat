@@ -102,12 +102,36 @@ def query():
         print request.get_json()
     return render_template('query.html')
 
+@app.route('/advanced_query_request', methods=['GET'])
+def advanced_query_request():
+    return render_template('advanced_query_request')
+
 @app.route('/basic_query_request', methods=['GET'])
 def query_request():
-    query = Murder.select().where(Murder.animal == request.args.get("animal"))
+    pigeonAndPig = "Pigeon&Pig"
+    doveAndChicken = "Dove&Chicken"
+    extraAnimals = None
+    queryExtra = None
+    fullQuery = None
+
+    if request.args.get("animal") in ["Pigeon", "Pig"]:
+        extraAnimals = pigeonAndPig
+    if request.args.get("animal") in ["Dove", "Chicken"]:
+        extraAnimals = doveAndChicken
+
+    queryOne = Murder.select().where(Murder.animal == request.args.get("animal"))
+    if extraAnimals:
+        queryExtra = Murder.select().where(Murder.animal == extraAnimals)
+
+    if queryExtra:
+        fullQuery = (queryOne | queryExtra)
+    else:
+        fullQuery = queryOne
+        
     queries = []
-    for x in query:
+    for x in fullQuery:
         queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed))
+
     return jsonify({"message": queries})
 
 @app.route('/map')
