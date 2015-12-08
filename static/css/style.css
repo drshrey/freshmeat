@@ -7,7 +7,7 @@
 	border: solid black 2px;
 	height: 1000px;
 	width: 650px;
-	position: relative;
+	position:relative;
 	left: 25%;
 	overflow: scroll;
 }
@@ -17,6 +17,7 @@
 	height:150px;
 	padding: 20px;
 	border: 5px solid black;
+	position:relative;
 }
 
 #navbar{

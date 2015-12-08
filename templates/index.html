@@ -57,8 +57,8 @@
                 }
 
                 var description = murder.quantity + ' parts found, ' + murder.body_part_found +
-                                '<p style="position: relative; left:440px; bottom:50px;"> ' + murder.date_started + ' -> ' + murder.date_closed + '</p>where: <a href=http://maps.google.com/?q=' + encodeURIComponent(murder.location) + '>' +
-                                murder.location + '</a>' + '<br>resolution: ' + murder.resolution
+                                '<div style="position: absolute; left:320px; top:10px;">' + murder.date_started + ' -> ' + murder.date_closed + '</div><p>where: <a href=http://maps.google.com/?q=' + encodeURIComponent(murder.location) + '></p>' +
+                                murder.location + '</a>' + '<br>resolution: ' + murder.resolution;
 
                 $('<div class="row"> <h4>' + imgPart + description + ' </h4> </div>').hide().prependTo('#feed').slideDown('fast');
             });
@@ -68,6 +68,7 @@
 </head>
 <body>
     {% block body %}
+    <h4 style="position:relative; left:25%;"> intercepted realtime feed of recent entries marked by the NYC Parks Commission</h4>
     <div class="container-fluid" id="feed" ></div>
     {% endblock %}
 </body>
