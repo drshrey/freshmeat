@@ -41,159 +41,150 @@
 </form>
 </div>
 
+
+
+
+
 <form class="form-horizontal">
 <fieldset>
+<div style="position:relative; float:left;">
 
-<!-- Form Name -->
-<legend>Query Records Onwards of 1993</legend>
 
-<!-- Multiple Radios -->
+<!-- Multiple Checkboxes (inline) -->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="radios">Select Multiple Animal Types</label>
-  <div class="col-md-4">
-  <div class="radio">
-    <label for="radios-0">
-      <input type="radio" name="radios" id="radios-0" value="Rooster" checked="checked">
-      Rooster
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-1">
-      <input type="radio" name="radios" id="radios-1" value="Chicken">
-      Chicken
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-2">
-      <input type="radio" name="radios" id="radios-2" value="Goat">
-      Goat
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-3">
-      <input type="radio" name="radios" id="radios-3" value="Lamb">
-      Lamb
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-4">
-      <input type="radio" name="radios" id="radios-4" value="Pig">
-      Pig
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-5">
-      <input type="radio" name="radios" id="radios-5" value="Rat">
-      Rat
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-6">
-      <input type="radio" name="radios" id="radios-6" value="Bird">
-      Bird
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-7">
-      <input type="radio" name="radios" id="radios-7" value="Dove">
-      Dove
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-8">
-      <input type="radio" name="radios" id="radios-8" value="Not Specified">
-      Other
-    </label>
-	</div>
-  </div>
-</div>
-
-<!-- Multiple Radios -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="radios">Select Multiple Body Parts</label>
-  <div class="col-md-4">
-  <div class="radio">
-    <label for="radios-0">
-      <input type="radio" name="radios" id="radios-0" value="head" checked="checked">
-      Head
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-1">
-      <input type="radio" name="radios" id="radios-1" value="legs">
-      Legs
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-2">
-      <input type="radio" name="radios" id="radios-2" value="head and body">
-      Head and Body
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-3">
-      <input type="radio" name="radios" id="radios-3" value="body without head">
-      Body without Head
-    </label>
-	</div>
-  </div>
-</div>
-
-<!-- Multiple Radios -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="radios">Select Multiple Priorities</label>
-  <div class="col-md-4">
-  <div class="radio">
-    <label for="radios-0">
-      <input type="radio" name="radios" id="radios-0" value="High" checked="checked">
-      High
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-1">
-      <input type="radio" name="radios" id="radios-1" value="Normal">
-      Normal
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-2">
-      <input type="radio" name="radios" id="radios-2" value="Low">
-      Low
-    </label>
-	</div>
-  </div>
-</div>
-
-<!-- Multiple Radios -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="radios">Select Multiple Boroughs</label>
-  <div class="col-md-4">
-  <div class="radio">
-    <label for="radios-0">
-      <input type="radio" name="radios" id="radios-0" value="Manhattan" checked="checked">
-      Manhattan
-    </label>
-	</div>
-  <div class="radio">
-    <label for="radios-1">
-      <input type="radio" name="radios" id="radios-1" value="Brooklyn">
+  <label class="col-md-4 control-label" for="checkboxes">Select Cities</label><br>
+  <div style="position:relative; float:right;" class="col-md-4">
+    <label class="checkbox-inline" for="checkboxes-0">
+      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="Brooklyn">
       Brooklyn
     </label>
-	</div>
-  <div class="radio">
-    <label for="radios-2">
-      <input type="radio" name="radios" id="radios-2" value="Queens">
+    <label class="checkbox-inline" for="checkboxes-1">
+      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="Manhattan">
+      Manhattan
+    </label>
+    <label class="checkbox-inline" for="checkboxes-2">
+      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="Queens">
       Queens
     </label>
-	</div>
-  <div class="radio">
-    <label for="radios-3">
-      <input type="radio" name="radios" id="radios-3" value="Bronx">
+    <label class="checkbox-inline" for="checkboxes-3">
+      <input type="checkbox" name="checkboxes" id="checkboxes-3" value="Bronx">
       The Bronx
+    </label>
+  </div>
+</div>
+
+
+
+<!-- Multiple Checkboxes (inline) -->
+<div style="margin:30px;" class="form-group">
+  <label  class="col-md-4 control-label" for="checkboxes">Select Animal Types</label>
+  <div class="col-md-4">
+    <label class="checkbox-inline" for="checkboxes-0">
+      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="Bird">
+      Bird
+    </label>
+    <label class="checkbox-inline" for="checkboxes-1">
+      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="Rooster">
+      Rooster
+    </label>
+    <label class="checkbox-inline" for="checkboxes-2">
+      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="Lamb">
+      Lamb
+    </label>
+    <label class="checkbox-inline" for="checkboxes-3">
+      <input type="checkbox" name="checkboxes" id="checkboxes-3" value="Dove">
+      Dove
+    </label>
+    <label class="checkbox-inline" for="checkboxes-4">
+      <input type="checkbox" name="checkboxes" id="checkboxes-4" value="Chicken">
+      Chicken
+    </label>
+    <label class="checkbox-inline" for="checkboxes-5">
+      <input type="checkbox" name="checkboxes" id="checkboxes-5" value="Pigeon">
+      Pigeon
+    </label>
+    <label class="checkbox-inline" for="checkboxes-6">
+      <input type="checkbox" name="checkboxes" id="checkboxes-6" value="Pig">
+      Pig
+    </label>
+    <label class="checkbox-inline" for="checkboxes-7">
+      <input type="checkbox" name="checkboxes" id="checkboxes-7" value="Rat">
+      Rat
+    </label>
+    <label class="checkbox-inline" for="checkboxes-8">
+      <input type="checkbox" name="checkboxes" id="checkboxes-8" value="Not Specified">
+      Other
+    </label>
+  </div>
+</div>
+
+<!-- Multiple Checkboxes (inline) -->
+<div style="margin-right:50px;" class="form-group">
+  <label  class="col-md-4 control-label" for="checkboxes">Select Priority</label>
+  <div class="col-md-4">
+    <label class="checkbox-inline" for="checkboxes-0">
+      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="High">
+      High
+    </label>
+    <label class="checkbox-inline" for="checkboxes-1">
+      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="Normal">
+      Normal
+    </label>
+    <label class="checkbox-inline" for="checkboxes-2">
+      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="Low">
+      Low
+    </label>
+  </div>
+</div>
+
+<!-- Multiple Checkboxes (inline) -->
+<div style="margin-right:30px;" class="form-group">
+  <label  class="col-md-4 control-label" for="checkboxes">Body Parts Found</label>
+  <div class="col-md-4">
+    <label class="checkbox-inline" for="checkboxes-0">
+      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="head">
+      Head
+    </label>
+    <label class="checkbox-inline" for="checkboxes-1">
+      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="legs">
+      Legs
+    </label>
+    <label class="checkbox-inline" for="checkboxes-2">
+      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="head and body">
+      Head and Body
+    </label>
+    <label class="checkbox-inline" for="checkboxes-3">
+      <input type="checkbox" name="checkboxes" id="checkboxes-3" value="body without head">
+      Body without Head
+    </label>
+  </div>
+</div>
+
+<!-- Multiple Checkboxes -->
+<div style="margin-right:30px;"class="form-group">
+  <label class="col-md-4 control-label" for="checkboxes">Select Resolution(s)</label>
+  <div class="col-md-4">
+  <div class="checkbox">
+    <label for="checkboxes-0">
+      <input type="checkbox" name="checkboxes" id="checkboxes-0" value="The Department of Parks and Recreation has completed the requested work order and corrected the problem.">
+      The Department of Parks and Recreation has completed the requested work order and corrected the problem.
+    </label>
+	</div>
+  <div class="checkbox">
+    <label for="checkboxes-1">
+      <input type="checkbox" name="checkboxes" id="checkboxes-1" value="No action was taken because the Department of Parks and Recreation determined that the issue reported was out of its jurisdiction.">
+      No action was taken because the Department of Parks and Recreation determined that the issue reported was out of its jurisdiction.
+    </label>
+	</div>
+  <div class="checkbox">
+    <label for="checkboxes-2">
+      <input type="checkbox" name="checkboxes" id="checkboxes-2" value="The condition was determined to be an issue appropriate for handling by an alternate entity. The Department of Parks and Recreation has notified the appropriate resource.">
+      The condition was determined to be an issue appropriate for handling by an alternate entity. The Department of Parks and Recreation has notified the appropriate resource.
     </label>
 	</div>
   </div>
 </div>
+
 
 <!-- Button -->
 <div class="form-group">
@@ -203,8 +194,15 @@
   </div>
 </div>
 
+
+</div>
 </fieldset>
 </form>
+
+
+
+
+
 
 
 {% endblock %}
