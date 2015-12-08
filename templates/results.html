@@ -1,1 +1,67 @@
 {% extends 'layout.html' %}
+
+{% block head %}
+<script type="text/javascript">
+	var imgDir = '/static/img';
+    var animalImages = {
+        'Birds': imgDir + '/bird.png',
+        'Chicken': imgDir + '/chicken-hen.jpg',
+        'Dove': imgDir + '/dove.jpg',
+        'Pig': imgDir + '/pig.jpg',
+        'Pigeon': imgDir + '/pigeon.png',
+        'Rooster': imgDir + '/rooster.png',
+        'Not Specified': imgDir + '/unknown.gif',
+        'Lamb': imgDir + '/lamb.svg',
+        'Rat': imgDir + '/rat.jpg',
+        'Goat': imgDir + '/goat.jpg'
+    }
+    animal = {{ animal|tojson }};
+    console.log(animalImages[animal]);
+    $("<img src="+animalImages[animal] +"></img>").load(function(){
+    	$(this).width("10%").height("10%").appendTo("#animal-image");
+    })
+    $("#animal-image").append("<img src="+animalImages[animal] +"></img>");
+</script>
+
+{% endblock %}
+
+{% block body %}
+	<div style="position:relative; left:48%;" id="animal-image"></div>
+
+	<table id="results" class='table table-bordered'>
+		<thead>
+			<tr><th>Animal</th><th>Body Parts Found</th><th>Quantity</th><th>Date Started</th><th>Date Closed</th><th>Source</th><th>Division</th><th>Form</th><th>Status</th><th>Priority</th><th>Location</th><th>Complaint Type</th><th>Resolution</th></tr>
+		</thead>
+		<tbody id="test">
+			<tr>
+			</tr>
+		</tbody>
+	</table>
+
+<script type="text/javascript">
+	var results = {{ queries|tojson }};
+	console.log(results);
+	console.log(document.getElementById("test"));
+	for(var i=0; i < results.length; i++){
+		console.log(results[i]);
+		$("#test").append("<tr>" + 
+		 					 "<th>" + results[i][0] + "</th>" +
+		 					 "<th>" + results[i][1] + "</th>" +
+		 					 "<th>" + results[i][2] + "</th>" +
+		 					 "<th>" + results[i][3] + "</th>" +
+		 					 "<th>" + results[i][4] + "</th>" +
+		 					 "<th>" + results[i][5] + "</th>" +
+		 					 "<th>" + results[i][6] + "</th>" +
+		 					 "<th>" + results[i][7] + "</th>" +
+		 					 "<th>" + results[i][8] + "</th>" +
+		 					 "<th>" + results[i][9] + "</th>" +
+		 					 "<th>" + results[i][10] + "</th>" +
+		 					 "<th>" + results[i][11] + "</th>" +
+		 					 "<th>" + results[i][12] + "</th>" + 
+		 					 "</tr>");
+	}
+
+</script>
+</script>
+
+{% endblock %}

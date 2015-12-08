@@ -128,11 +128,27 @@ def query_request():
     else:
         fullQuery = queryOne
         
+    '''
+    Taken from Murder model in db_init:
+        animal = TextField()
+        quantity = IntegerField()
+        body_part_found = TextField()
+        date_started = TextField()
+        date_closed = TextField()
+        source = TextField()
+        division = TextField()
+        form = TextField()
+        status = TextField()
+        priority = TextField()
+        location = TextField()
+        complaint_type = TextField()
+        resolution = TextField()
+    '''
     queries = []
     for x in fullQuery:
-        queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed))
+        queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed, x.source, x.division, x.form, x.status, x.priority,x.location, x.complaint_type,x.resolution))
 
-    return jsonify({"message": queries})
+    return render_template('results.html', animal=request.args.get('animal'), queries=queries)
 
 @app.route('/map')
 def map():
