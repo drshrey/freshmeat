@@ -59,7 +59,7 @@ def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        time.sleep(5)
+        time.sleep(45)
         # Make random entry 
         from random_entries import create_entries
         import fn
@@ -120,4 +120,4 @@ def test_message(message):
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=6000,debug=False)
+    socketio.run(app, port=5000,debug=False)
