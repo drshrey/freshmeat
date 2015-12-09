@@ -95,11 +95,16 @@ def compute_city_scores(bodyPart=None):
         city[i + "-deaths"] = animalDeaths
         city[i+"-deathProb"] = float( len(city[i+"-deaths"]) / len(city["totalDeaths"]) ) * 100
         if bodyPart:
-            bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart)
-            animalBodyPartDeaths = Murder.select().where(Murder.animal == i).join(Murder, on=Murder.body_part_found==bodyPart).get()
-            print animalBodyPartDeaths
+            bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart).get()
+            print bodyPart
+            print i
+            #animalBodyPartDeaths = Murder.select().join(BodyPartMurder, join=JOIN.INNER ).where(Murder.animal == i)    
+            queryString = "select * from murder bodyPartDeaths, murder animalDeaths where bodyPartDeaths.body_part_found='" +  bodyPart + "' and animalDeaths.animal='" + i + "'";
+            animalBodyPartDeaths = animalsDB.execute_sql(queryString)
+            res = [r[0] for r in animalBodyPartDeaths.fetchall()]
+            print "hello", res
             # animalBodyPartDeaths = (city[i+"-deaths"] bodyPartDeaths)
-            city[i+"-bodyPartProb"] = float( len(animalBodyPartDeaths) / len(bodyPartDeaths) ) * 100
+            city[i+"-bodyPartProb"] = float( len(res) / len(bodyPartDeaths) ) * 100
 
     return city
 
@@ -192,8 +197,8 @@ def subscribe_user():
         '''
         get all results for this user
         '''
-        print "vbp", user.valued_body_part
-        cityScores = compute_city_scores(bodyPart=user.valued_body_part)
+        #print "vbp", user.valued_body_part
+        #cityScores = compute_city_scores(bodyPart=user.valued_body_part)
         #divisionScores = compute_division_scores(area=user.borough, bodyPart=user.valued_body_part)
     return render_template("subscriber_results.html", results=results)
 
@@ -220,6 +225,9 @@ def query_request():
         extraAnimals = pigeonAndPig
     if request.args.get("animal") in ["Dove", "Chicken"]:
         extraAnimals = doveAndChicken
+    import random
+    division = random.choice(["Manhattan", "Brooklyn", "Bronx", "Queens"])
+    print "DIVISION", division
 
     queryOne = Murder.select().where(Murder.animal == request.args.get("animal"))
     if extraAnimals:
@@ -249,7 +257,7 @@ def query_request():
     queries = []
     for x in fullQuery:
         queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed, x.source, x.division, x.form, x.status, x.priority,x.location, x.complaint_type,x.resolution))
-    return render_template('results.html', animal=request.args.get('animal'), queries=queries)
+    return render_template('results.html', animal=request.args.get('animal'), queries=queries, division=division)
 
 @app.route('/map')
 def map():

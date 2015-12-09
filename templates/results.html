@@ -26,7 +26,10 @@
 {% endblock %}
 
 {% block body %}
-	<div style="position:relative; left:48%;" id="animal-image"></div>
+	<div style="position:relative; left:48%;" id="animal-image"> 
+	</div>
+	<div style="" id="division">
+	</div>
 
 	<table id="results" class='table table-bordered'>
 		<thead>
@@ -40,6 +43,10 @@
 
 <script type="text/javascript">
 	var results = {{ queries|tojson }};
+	var division = {{ queries|tojson }};
+	items = ["Manhattan", "Brooklyn", "The Bronx", "Queens"];
+	var item = items[Math.floor(Math.random()*items.length)];
+	$("#division").append("<h3>Eat at " + item +"</h3>");
 	console.log(results);
 	console.log(document.getElementById("test"));
 	for(var i=0; i < results.length; i++){
