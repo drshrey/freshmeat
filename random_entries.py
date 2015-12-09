@@ -4,7 +4,7 @@ import random
 # Globals
 ANIMALS = ["Birds", "Rooster", "Lamb", "Dove&Chicken", "Pigeon", "Pigeon&Pig", "Not Specified", "Rat",
 "Goat","Goat&Rooster&Lamb"]
-BODY_PART_FOUND = ["head", "legs", "head and body", "body without head"]
+BODY_PART_FOUND = ["head", "legs", "head and body", "body without head", 'Left Arm', 'Right Arm', 'Right Leg', 'Left Leg', 'Tail']
 DIVISION = ["Manhattan", "Brooklyn", "Bronx", "Queens"]
 PRIORITY = ["Normal", "High", "Low"]
 RESOLUTION = ["The Department of Parks and Recreation has completed the requested work order and corrected the problem.",

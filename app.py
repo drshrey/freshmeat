@@ -50,7 +50,7 @@ from random_entries import create_entries, ANIMALS
 from flask import Flask, render_template, session, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-from db_init import Murder, Subscriber
+from db_init import Murder, Subscriber, animalsDB
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -60,14 +60,21 @@ thread = None
 '''
 compute percentages and give comparison
 '''
-
+'''
 # Division/ Borough 
 def compute_division_scores(area, bodyPart=None):
     division = {}
     division["totalDeaths"] = Murder.select().where(Murder.division == area)
     
     for i in ANIMALS:
+        """
+        (SELECT * FROM murder
+            WHERE murder.animal = iterAnimal)
+        INNER JOIN
+        (SELECT * from murder
+            WHERE murder.division=borough)  
 
+        """
         animalDeaths = Murder.select().where(Murder.animal == i)
         division[i + "-deaths"] = (animalDeaths & division["totalDeaths"])
         division[i+"-deathProb"] = float(division[i+"-deaths"] / division["totalDeaths"]) * 100
@@ -77,20 +84,22 @@ def compute_division_scores(area, bodyPart=None):
             division[i+"-bodyPartProb"] = float( animalBodyPartDeaths / bodyPartDeaths) * 100
 
     return division
-
+'''
+from peewee import SelectQuery
 # Overall City
 def compute_city_scores(bodyPart=None):
     city = {}
     city["totalDeaths"] = Murder.select()
     for i in ANIMALS:
-
         animalDeaths = Murder.select().where(Murder.animal == i)
-        city[i + "-deaths"] = (animalDeaths & city["totalDeaths"])
-        city[i+"-deathProb"] = float(city[i+"-deaths"] / city["totalDeaths"]) * 100
+        city[i + "-deaths"] = animalDeaths
+        city[i+"-deathProb"] = float( len(city[i+"-deaths"]) / len(city["totalDeaths"]) ) * 100
         if bodyPart:
             bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart)
-            animalBodyPartDeaths = (city[i+"-deaths"] & bodyPartDeaths)
-            city[i+"-bodyPartProb"] = float( animalBodyPartDeaths / bodyPartDeaths) * 100
+            animalBodyPartDeaths = Murder.select().where(Murder.animal == i).join(Murder, on=Murder.body_part_found==bodyPart).get()
+            print animalBodyPartDeaths
+            # animalBodyPartDeaths = (city[i+"-deaths"] bodyPartDeaths)
+            city[i+"-bodyPartProb"] = float( len(animalBodyPartDeaths) / len(bodyPartDeaths) ) * 100
 
     return city
 
@@ -183,8 +192,9 @@ def subscribe_user():
         '''
         get all results for this user
         '''
+        print "vbp", user.valued_body_part
         cityScores = compute_city_scores(bodyPart=user.valued_body_part)
-        divisionScores = compute_division_scores(area=user.borough, bodyPart=user.valued_body_part)
+        #divisionScores = compute_division_scores(area=user.borough, bodyPart=user.valued_body_part)
     return render_template("subscriber_results.html", results=results)
 
 @app.route('/query', methods=['GET'])
