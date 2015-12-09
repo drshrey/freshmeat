@@ -1,1 +1,184 @@
 {% extends "layout.html" %}
+
+{% block body %}
+
+<div style="position: relative; left:60%; bottom: 45px;">
+<h3> subscribe</h3>
+</div>
+
+<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+<div style="position:relative; left:26%;" class="bootstrap-iso">
+ <div class="container-fluid">
+  <div class="row">
+   <div class="col-md-6 col-sm-6 col-xs-12">
+    <form method="post" action="/subscribe_user">
+     <div class="form-group">
+      <label class="control-label" for="number">
+       Enter Phone Number (for use in the future when you want to find update information/ statistics on yourself).
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <div class="input-group">
+       <div class="input-group-addon">
+        <i class="fa fa-phone">
+        </i>
+       </div>
+       <input required class="form-control" id="number" name="number" placeholder="7576227382" type="text"/>
+      </div>
+     </div>
+     <div class="form-group ">
+      <label class="control-label requiredField">
+       Where are you going/ where do you live/ where do you visit most?
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <div class="">
+       <div class="radio">
+        <label class="radio">
+         <input name="borough" type="radio" value="Brooklyn"/>
+         Brooklyn
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="borough" type="radio" value="Manhattan"/>
+         Manhattan
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="borough" type="radio" value="Queens"/>
+         Queens
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="borough" type="radio" value="The Bronx"/>
+         The Bronx
+        </label>
+       </div>
+       <span class="help-block" id="hint_radio">
+        Pick the most relevant borough of NYC to you.
+       </span>
+      </div>
+     </div>
+     <div class="form-group ">
+      <label class="control-label requiredField">
+       What type of animal are you?
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <div class="">
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Goat"/>
+         Goat
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Pig"/>
+         Pig
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Bird"/>
+         Bird
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Pigeon"/>
+         Pigeon
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Rat"/>
+         Rat
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Lamb/ sheep"/>
+         Lamb/ sheep
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Chicken"/>
+         Chicken
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Dove"/>
+         Dove
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="animal" type="radio" value="Other"/>
+         Other
+        </label>
+       </div>
+      </div>
+     </div>
+
+     <div class="form-group ">
+      <label class="control-label requiredField">
+       What type of animal are you?
+       <span class="asteriskField">
+        *
+       </span>
+      </label>
+      <div class="">
+       <div class="radio">
+        <label class="radio">
+         <input name="body_part" type="radio" value="la"/>
+         Left Arm/ Wing
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="body_part" type="radio" value="ra"/>
+         Right Arm/ Wing
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="body_part" type="radio" value="ll"/>
+         Left Leg
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="body_part" type="radio" value="rl"/>
+         Right Leg
+        </label>
+       </div>
+       <div class="radio">
+        <label class="radio">
+         <input name="body_part" type="radio" value="t"/>
+         Tail
+        </label>
+       </div>
+      </div>
+     </div>     
+     <div class="form-group">
+      <div>
+       <button class="btn btn-primary " name="submit" type="submit">	
+        Submit
+       </button>
+      </div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
     {% block head %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fresh Meat</title>
+    <title>fresh meat</title>
     <script type="text/javascript" charset="utf-8">
         var imgDir = '/static/img';
         var animalImages = {
@@ -68,8 +68,11 @@
 </head>
 <body>
     {% block body %}
+    <div style="position: relative; left:60%; bottom: 45px;">
+<h3> feed</h3>
+</div>
     <h4 style="position:relative; left:25%;"> intercepted realtime feed of recent entries marked by the NYC Parks Commission </h4> 
-    <h5 style="position:relative; left: 40%"> interecept rate currently at 10 seconds/entry)</h5>
+    <h5 style="position:relative; left: 40%"> interecept rate currently at 10 seconds/entry</h5>
     <div class="container-fluid" id="feed" ></div>
     {% endblock %}
 </body>

@@ -46,23 +46,69 @@ elif async_mode == 'gevent':
 
 import time
 from threading import Thread
+from random_entries import create_entries, ANIMALS
 from flask import Flask, render_template, session, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-from db_init import Murder
+from db_init import Murder, Subscriber
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
+'''
+compute percentages and give comparison
+'''
+
+# Division/ Borough 
+def compute_division_scores(area, bodyPart=None):
+    division = {}
+    division["totalDeaths"] = Murder.select().where(Murder.division == area)
+    
+    for i in ANIMALS:
+
+        animalDeaths = Murder.select().where(Murder.animal == i)
+        division[i + "-deaths"] = (animalDeaths & division["totalDeaths"])
+        division[i+"-deathProb"] = float(division[i+"-deaths"] / division["totalDeaths"]) * 100
+        if bodyPart:
+            bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart)
+            animalBodyPartDeaths = (division[i+"-deaths"] & bodyPartDeaths)
+            division[i+"-bodyPartProb"] = float( animalBodyPartDeaths / bodyPartDeaths) * 100
+
+    return division
+
+# Overall City
+def compute_city_scores(bodyPart=None):
+    city = {}
+    city["totalDeaths"] = Murder.select()
+    for i in ANIMALS:
+
+        animalDeaths = Murder.select().where(Murder.animal == i)
+        city[i + "-deaths"] = (animalDeaths & city["totalDeaths"])
+        city[i+"-deathProb"] = float(city[i+"-deaths"] / city["totalDeaths"]) * 100
+        if bodyPart:
+            bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart)
+            animalBodyPartDeaths = (city[i+"-deaths"] & bodyPartDeaths)
+            city[i+"-bodyPartProb"] = float( animalBodyPartDeaths / bodyPartDeaths) * 100
+
+    return city
+
+# Animals that animal_type feeds on if it's a carnivore
+'''
+Gets a list of prey + its addresses + body part if within a week in the same borough
+'''
+#def prey_address_list(animal_type, borough):
+    #prey = 
+    #return []
+
+
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
         time.sleep(1)
-        # Make random entry 
-        from random_entries import create_entries
+        # Make random entry         
         import fn
         import random
         import mysql.connector
@@ -97,6 +143,50 @@ def index():
         thread.start()
     return render_template('index.html')
 
+
+import peewee
+import db_init
+@app.route('/subscribe_user', methods=['POST', 'GET'])
+def subscribe_user():
+    BODY_PART_DICT = {
+        'la': "Left Arm",
+        'ra': "Right Arm",
+        'll': "Left Leg",
+        "rl": "Right Leg",
+        "t": "Tail"
+    }
+    if request.method == "POST":
+        print request.form
+        print request.form['number']
+        print request.form['borough']
+        print request.form['animal']
+        print request.form['body_part']
+        bp = BODY_PART_DICT[request.form['body_part']]
+        print bp
+        try:
+            newSubscriber = Subscriber(phone_number=request.form['number'], borough=request.form['borough'], animal_type=request.form['animal'], valued_body_part=bp)
+            newSubscriber.save()
+        except peewee.IntegrityError:
+            return render_template("error.html", error="Duplicate Phone Number. Pick Another One.")
+        test = Subscriber.get(Subscriber.phone_number == request.form['number'])
+        print test
+        print test.phone_number
+    if request.method == 'GET':
+        print "num", request.args.get("number")
+        try:
+            user = Subscriber.get(Subscriber.phone_number == request.args.get("number"))
+            if not user:
+                return render_template("error.html", error="Could not find phone number. Try again or subscribe.")
+            print user.animal_type
+        except:
+            return render_template("error.html", error="Phone number does not match any subscriber. Try again or subscribe in the subscribe page")
+        '''
+        get all results for this user
+        '''
+        cityScores = compute_city_scores(bodyPart=user.valued_body_part)
+        divisionScores = compute_division_scores(area=user.borough, bodyPart=user.valued_body_part)
+    return render_template("subscriber_results.html", results=results)
+
 @app.route('/query', methods=['GET'])
 def query():
     if request.method == 'GET':
@@ -106,7 +196,7 @@ def query():
 
 @app.route('/advanced_query_request', methods=['GET'])
 def advanced_query_request():
-    return render_template('advanced_query_request')
+    return jsonify({'message':"hello. is it me you're looking for?"})
 
 @app.route('/basic_query_request', methods=['GET'])
 def query_request():
@@ -149,7 +239,6 @@ def query_request():
     queries = []
     for x in fullQuery:
         queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed, x.source, x.division, x.form, x.status, x.priority,x.location, x.complaint_type,x.resolution))
-
     return render_template('results.html', animal=request.args.get('animal'), queries=queries)
 
 @app.route('/map')

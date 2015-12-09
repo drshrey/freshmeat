@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<script type="text/javascript">
+	var results = {{ results|tojson }};
+	console.log(results);
+</script>
+
+
+{% endblock %}

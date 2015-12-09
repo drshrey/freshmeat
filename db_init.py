@@ -10,14 +10,14 @@ with open('creds.txt') as f:
 
 
 animalsDB = MySQLDatabase("animals", host="freshmeat.c3ne5kfmg1jo.us-west-2.rds.amazonaws.com", port=3306, user=AWS_MYSQL_USER, passwd=AWS_MYSQL_PASSWORD)
-#animals2DB = MySQLDatabase("animals", host="159.203.64.63", port=3306, user="root", passwd="Idaman2015")
+#animalsDB = MySQLDatabase("animals2", host="freshmeat.c3ne5kfmg1jo.us-west-2.rds.amazonaws.com", port=3306, user=AWS_MYSQL_USER, passwd=AWS_MYSQL_PASSWORD)
 
 class Murder(Model):
 	animal = TextField()
 	quantity = IntegerField()
 	body_part_found = TextField()
-	date_started = TextField()
-	date_closed = TextField()
+	date_started = DateTimeField()
+	date_closed = DateTimeField()
 	source = TextField()
 	division = TextField()
 	form = TextField()
@@ -30,17 +30,42 @@ class Murder(Model):
 	class Meta:
 		database = animalsDB
 
+'''
 
-class Subscriber(Model):
-	phone_number = CharField(unique=True)
-	email = CharField(unique=True)
-	animal_type = CharField()
+class Animal(Model):
+	is_carnivore = BooleanField(default=False)
+	animal_name = TextField()
 
 	class Meta:
 		database = animalsDB
 
-#animalsDB.drop_tables([Murder, Subscriber])
-#animalsDB.create_tables([Murder, Subscriber])
+# Junction Table
+class AnimalPrey(Model):
+	prey = ForeignKeyField(Animal, related_name='prey')
+
+	class Meta:
+		database = animalsDB
+
+
+class AnimalMurder(Model):
+	animal = ForeignKeyField(Animal, related_name='murder')
+	murder = ForeignKeyField(Murder, related_name='animal')
+
+	class Meta:
+		database = animalsDB
+'''
+
+class Subscriber(Model):
+	phone_number = IntegerField(unique=True)
+	borough = TextField()
+	animal_type = CharField()
+	valued_body_part = TextField()
+
+	class Meta:
+		database = animalsDB
+
+#animalsDB.drop_tables([Subscriber])
+#animalsDB.create_tables([Subscriber])
 
 
 
