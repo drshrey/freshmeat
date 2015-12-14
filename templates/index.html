@@ -25,12 +25,12 @@
             // the data is displayed in the "Received" section of the page
             socket.on('murder', function(msg) {
                 msg = JSON.parse(msg.data);
-                console.log(msg);
+                console.log("HELLO" + msg.body_part.body_part);
                 //Parse details
                 var murder = {
                     animals : msg.animal.name,
                     quantity : msg.quantity,
-                    body_part_found : msg.body_part.name,
+                    body_part_found : msg.body_part.body_part,
                     date_started : msg.date_started,
                     date_closed : msg.date_closed,
                     source : msg.source,
