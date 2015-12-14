@@ -12,15 +12,63 @@
 	overflow: scroll;
 }
 
-.row{
-	width: 640px;
-	height:auto;
-	padding: 20px;
-	border: 5px solid black;
-	position:relative;
-}
 
 #navbar{
 	position: relative;
 	left: 50px;
+}
+
+.dashboard-el{
+    border: solid black 5px;
+    margin: 40px;
+    padding: 25px;
+    width:500px;
+    height: 300px;
+    
+}
+
+.row{
+    border: 5px solid black;
+    position:relative;
+    height:auto;
+    width: auto;
+    overflow: scroll;
+    padding: 25px;
+    margin: 25px;
+}
+
+#prey-list{
+    position:relative;
+    width:auto;
+    right: 100px;
+    overflow: scroll;
+}
+
+#stats{
+    position: relative;
+    left: 500px;
+    bottom: 400px;;
+}
+
+#heatmap{
+    position: relative;
+    right: 100px;
+    bottom: 400px;
+}
+
+#neighborhood-watch-list{
+    position: relative;
+}
+
+.h3, #dash-head{
+    position: relative;
+    bottom: 80px;
+}
+
+#info{
+    border: 4px black solid;
+    position: absolute;
+    left: 25%;
+    top: 10%;
+    margin: 10px;
 }

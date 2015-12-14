@@ -50,102 +50,58 @@ from random_entries import create_entries, ANIMALS
 from flask import Flask, render_template, session, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
-from db_init import Murder, Subscriber, animalsDB
+from db_init import Location, Animal, PredPrey, Division, Murder, AnimalMurder, DivisionMurder,LocationMurder, BodyPart, MurderBodyPart, Subscriber, SubscriberAnimal, SubscriberBodyPart,SubscriberDivision, FullSubscriber, FullMurder
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
-'''
-compute percentages and give comparison
-'''
-'''
-# Division/ Borough 
-def compute_division_scores(area, bodyPart=None):
-    division = {}
-    division["totalDeaths"] = Murder.select().where(Murder.division == area)
-    
-    for i in ANIMALS:
-        """
-        (SELECT * FROM murder
-            WHERE murder.animal = iterAnimal)
-        INNER JOIN
-        (SELECT * from murder
-            WHERE murder.division=borough)  
+def get_full_murder(murder):
 
-        """
-        animalDeaths = Murder.select().where(Murder.animal == i)
-        division[i + "-deaths"] = (animalDeaths & division["totalDeaths"])
-        division[i+"-deathProb"] = float(division[i+"-deaths"] / division["totalDeaths"]) * 100
-        if bodyPart:
-            bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart)
-            animalBodyPartDeaths = (division[i+"-deaths"] & bodyPartDeaths)
-            division[i+"-bodyPartProb"] = float( animalBodyPartDeaths / bodyPartDeaths) * 100
+    fm= FullMurder.get(FullMurder.murder == murder)
 
-    return division
-'''
-from peewee import SelectQuery
-# Overall City
-def compute_city_scores(bodyPart=None):
-    city = {}
-    city["totalDeaths"] = Murder.select()
-    for i in ANIMALS:
-        animalDeaths = Murder.select().where(Murder.animal == i)
-        city[i + "-deaths"] = animalDeaths
-        city[i+"-deathProb"] = float( len(city[i+"-deaths"]) / len(city["totalDeaths"]) ) * 100
-        if bodyPart:
-            bodyPartDeaths = Murder.select().where(Murder.body_part_found == bodyPart).get()
-            print bodyPart
-            print i
-            #animalBodyPartDeaths = Murder.select().join(BodyPartMurder, join=JOIN.INNER ).where(Murder.animal == i)    
-            queryString = "select * from murder bodyPartDeaths, murder animalDeaths where bodyPartDeaths.body_part_found='" +  bodyPart + "' and animalDeaths.animal='" + i + "'";
-            animalBodyPartDeaths = animalsDB.execute_sql(queryString)
-            res = [r[0] for r in animalBodyPartDeaths.fetchall()]
-            print "hello", res
-            # animalBodyPartDeaths = (city[i+"-deaths"] bodyPartDeaths)
-            city[i+"-bodyPartProb"] = float( len(res) / len(bodyPartDeaths) ) * 100
+    import datetime
+    import json
+    date_handler = lambda obj: (
+        obj.isoformat()
+        if isinstance(obj, datetime.datetime)
+        or isinstance(obj, datetime.date)
+        else None
+    )
 
-    return city
-
-# Animals that animal_type feeds on if it's a carnivore
-'''
-Gets a list of prey + its addresses + body part if within a week in the same borough
-'''
-#def prey_address_list(animal_type, borough):
-    #prey = 
-    #return []
-
+    murderObj = {
+            "animal": {'name': fm.animal.name},
+            "division": {'name':fm.division.name},
+            "location": {'address': fm.location.address},
+            "body_part": {'body_part': fm.body_part.name},
+            "quantity": fm.murder.quantity,
+            "date_started": json.dumps(fm.murder.date_started, default=date_handler),
+            "date_closed": json.dumps(fm.murder.date_closed, default=date_handler),
+            "source": fm.murder.source,
+            "form": fm.murder.status,
+            "status": fm.murder.status,
+            "priority": fm.murder.priority,
+            "complaint_type": fm.murder.complaint_type,
+            "resolution": fm.murder.resolution
+            }
+    return murderObj
+            
 
 def background_thread():
     """Example of how to send server generated events to clients."""
     count = 0
     while True:
-        time.sleep(1)
+        time.sleep(3)
         # Make random entry         
-        import fn
+        from peewee import *
         import random
-        import mysql.connector
-
-        cxn = mysql.connector.connect(user=AWS_MYSQL_USER, password=AWS_MYSQL_PASSWORD, host='freshmeat.c3ne5kfmg1jo.us-west-2.rds.amazonaws.com', database='animals')
-        cursor = cxn.cursor()
-        query = ("select * from murder order by RAND() limit 1")
-        cursor.execute(query)
-        for i in cursor:
-            randRow = list(i)
-        '''
-        row = create_entries(1, today=True)[0]
-        print row
-        newMurder = Murder.create(animal=row[0], quantity=row[1], body_part_found=row[2],
-            date_started=row[3], date_closed=row[4], source=row[5], division=row[6],
-            form=row[7], status=row[8], priority=row[9], location=row[10],
-            complaint_type=row[11], resolution=row[12])
-        newMurder.save()
-        row.insert(0, "")
-        '''
-
+        import json
+        randMurder= random.choice([x for x in Murder.select()])
+        randMurderJson = json.dumps(get_full_murder(randMurder))
         socketio.emit('murder',
-                      {'data': randRow},
+                      {'data': randMurderJson},
                       namespace='/test')
 
 @app.route('/')
@@ -162,6 +118,12 @@ import peewee
 import db_init
 @app.route('/subscribe_user', methods=['POST', 'GET'])
 def subscribe_user():
+    results = {
+       'borough': "",
+       'number': '',
+       'animal': None,
+       'prey' : None
+    }
     BODY_PART_DICT = {
         'la': "Left Arm",
         'ra': "Right Arm",
@@ -169,37 +131,132 @@ def subscribe_user():
         "rl": "Right Leg",
         "t": "Tail"
     }
+    
+    def get_full_subscriber(sub):
+        sub = FullSubscriber.get(FullSubscriber.subscriber)
+        return {
+                "number": sub.subscriber.number,
+                "animal": {
+                    "name": sub.animal.name
+                    },
+                "body_part": {
+                    "name": sub.body_part.name
+                    },
+                "division":{
+                    "name": sub.division.name
+                    }   
+            }
+
+    def get_neighborhood_wl(sub):
+        #Get div
+        div = SubscriberDivision.select().where(SubscriberDivision.subscriber == sub).get().division
+        full_wl = FullSubscriber.select().where(FullSubscriber.division==div)
+        return full_wl
+
+    import json
+    import datetime
+    def get_predprey(sub):
+        FORMAT = "%m/%d/%Y %I:%M:%S"
+        fs = FullSubscriber.get(FullSubscriber.subscriber == sub)
+        prey = PredPrey.select().where(PredPrey.predAnimal == fs.animal)
+        preyRecords = []
+        predRecords = []
+        for p in prey:
+            qry = FullMurder.select().where(FullMurder.animal == p)
+            for x in qry:
+                fm = { 
+                "animal": {'name': x.animal.name},
+                "division": {'name':x.division.name},
+                "location": {'address': x.location.address},
+                "body_part": {'body_part': x.body_part.name},
+                "quantity": x.murder.quantity,
+                "date_started": json.dumps(x.murder.date_started.strftime(FORMAT)),
+                "date_closed": json.dumps(x.murder.date_closed.strftime(FORMAT)),
+                "source": x.murder.source,
+                "form": x.murder.status,
+                "status": x.murder.status,
+                "priority": x.murder.priority,
+                "complaint_type": x.murder.complaint_type,
+                "resolution": x.murder.resolution
+                }
+                preyRecords.append(fm)
+ 
+        
+        return preyRecords
+
+
     if request.method == "POST":
         print request.form
         print request.form['number']
         print request.form['borough']
         print request.form['animal']
         print request.form['body_part']
-        bp = BODY_PART_DICT[request.form['body_part']]
-        print bp
         try:
-            newSubscriber = Subscriber(phone_number=request.form['number'], borough=request.form['borough'], animal_type=request.form['animal'], valued_body_part=bp)
-            newSubscriber.save()
+            # Check if number exists
+            check = None
+            try:
+                check = Subscriber.get(Subscriber.number == request.form['number'])
+            except:
+                pass
+            if check:
+                return render_template('error.html', error="Number already picked. Try another one.")
+            sub = Subscriber(number=request.form['number'])
+            sub.save()
+            an = Animal.get(Animal.name==request.form['animal'])
+            
+            sa = SubscriberAnimal(subscriber=sub, animal=an)
+            sa.save()
+
+            bodypart = BodyPart.get(BodyPart.name==request.form['body_part'])
+            sb = SubscriberBodyPart(subscriber=sub, body_part=bodypart)
+            sb.save()
+            div= Division.get(Division.name==request.form['borough'])
+            sd = SubscriberDivision(subscriber=sub, division=div)
+            sd.save()
+            fs = FullSubscriber(subscriber=sub, animal=an, body_part=bodypart, division=div)
+            fs.save()
         except peewee.IntegrityError:
             return render_template("error.html", error="Duplicate Phone Number. Pick Another One.")
-        test = Subscriber.get(Subscriber.phone_number == request.form['number'])
-        print test
-        print test.phone_number
+        sub = Subscriber.get(Subscriber.number == request.form['number'])
+        subFull = get_full_subscriber(sub)
+        wl = get_neighborhood_wl(sub)
+        wlSubs = [get_full_subscriber(x) for x in wl]
+        results['watchlist'] = wlSubs
+        results['subFull'] = subFull
+        results['borough'] = subFull['division']['name']
+        results['number'] = subFull['number']
+        results['animal'] = subFull['animal']['name']
+        prey= get_predprey(sub)
+        results['prey'] = prey
+        print subFull
+        print wl
     if request.method == 'GET':
-        print "num", request.args.get("number")
+        sub = None
+        print request.args.get('number')
+        phonenumber = request.args.get('number')
         try:
-            user = Subscriber.get(Subscriber.phone_number == request.args.get("number"))
-            if not user:
-                return render_template("error.html", error="Could not find phone number. Try again or subscribe.")
-            print user.animal_type
+            sub = Subscriber.get(Subscriber.number== phonenumber)
         except:
-            return render_template("error.html", error="Phone number does not match any subscriber. Try again or subscribe in the subscribe page")
-        '''
-        get all results for this user
-        '''
-        #print "vbp", user.valued_body_part
-        #cityScores = compute_city_scores(bodyPart=user.valued_body_part)
-        #divisionScores = compute_division_scores(area=user.borough, bodyPart=user.valued_body_part)
+            return render_template('error.html', error='Number does not exist. Subscribe by going to subscribe page and registering!')
+        subFull = get_full_subscriber(sub)
+        wl = get_neighborhood_wl(sub)
+        print subFull
+        print wl
+        wl_subs = []
+        if wl:
+            for i in wl:
+                if i.subscriber.number != sub.number:
+                    wl_subs.append(get_full_subscriber(i))
+        results['watchlist'] = wl_subs
+        results['subFull'] = subFull
+        results['borough'] = subFull['division']['name']
+        results['number'] = subFull['number']
+        results['animal'] = subFull['animal']['name']
+        prey= get_predprey(sub)
+        results['prey'] = prey
+        print results['prey']
+
+
     return render_template("subscriber_results.html", results=results)
 
 @app.route('/query', methods=['GET'])
@@ -215,49 +272,18 @@ def advanced_query_request():
 
 @app.route('/basic_query_request', methods=['GET'])
 def query_request():
-    pigeonAndPig = "Pigeon&Pig"
-    doveAndChicken = "Dove&Chicken"
-    extraAnimals = None
-    queryExtra = None
-    fullQuery = None
+    animal = request.args.get('animal')
+    bodypart = request.args.get('bodypart')
 
-    if request.args.get("animal") in ["Pigeon", "Pig"]:
-        extraAnimals = pigeonAndPig
-    if request.args.get("animal") in ["Dove", "Chicken"]:
-        extraAnimals = doveAndChicken
-    import random
-    division = random.choice(["Manhattan", "Brooklyn", "Bronx", "Queens"])
-    print "DIVISION", division
+    left= "Left"
+    right = "Right"
 
-    queryOne = Murder.select().where(Murder.animal == request.args.get("animal"))
-    if extraAnimals:
-        queryExtra = Murder.select().where(Murder.animal == extraAnimals)
-
-    if queryExtra:
-        fullQuery = (queryOne | queryExtra)
-    else:
-        fullQuery = queryOne
-        
-    '''
-    Taken from Murder model in db_init:
-        animal = TextField()
-        quantity = IntegerField()
-        body_part_found = TextField()
-        date_started = TextField()
-        date_closed = TextField()
-        source = TextField()
-        division = TextField()
-        form = TextField()
-        status = TextField()
-        priority = TextField()
-        location = TextField()
-        complaint_type = TextField()
-        resolution = TextField()
-    '''
-    queries = []
-    for x in fullQuery:
-        queries.append((x.animal, x.quantity, x.body_part_found, x.date_started, x.date_closed, x.source, x.division, x.form, x.status, x.priority,x.location, x.complaint_type,x.resolution))
-    return render_template('results.html', animal=request.args.get('animal'), queries=queries, division=division)
+    # Query all records related to the animal
+    animal = Animal.select().where(Animal.name == animal).get()
+    fm_models = FullMurder.select().where(FullMurder.animal == animal)
+    full_murders = [get_full_murder(am.murder) for am in fm_models]
+    # Query all records related to the body part and get the borough with the most of that leg type
+    return render_template('results.html', queries=full_murders)
 
 @app.route('/map')
 def map():

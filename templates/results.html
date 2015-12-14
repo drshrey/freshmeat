@@ -15,7 +15,7 @@
         'Rat': imgDir + '/rat.jpg',
         'Goat': imgDir + '/goat.jpg'
     }
-    animal = {{ animal|tojson }};
+    animal = 'Chicken';
     console.log(animalImages[animal]);
     $("<img src="+animalImages[animal] +"></img>").load(function(){
     	$(this).width("10%").height("10%").appendTo("#animal-image");
@@ -43,7 +43,7 @@
 
 <script type="text/javascript">
 	var results = {{ queries|tojson }};
-	var division = {{ queries|tojson }};
+    console.log(results);
 	items = ["Manhattan", "Brooklyn", "The Bronx", "Queens"];
 	var item = items[Math.floor(Math.random()*items.length)];
 	$("#division").append("<h3>Eat at " + item +"</h3>");
@@ -52,19 +52,19 @@
 	for(var i=0; i < results.length; i++){
 		console.log(results[i]);
 		$("#results").append("<tr>" + 
-		 					 "<th>" + results[i][0] + "</th>" +
-		 					 "<th>" + results[i][1] + "</th>" +
-		 					 "<th>" + results[i][2] + "</th>" +
-		 					 "<th>" + results[i][3] + "</th>" +
-		 					 "<th>" + results[i][4] + "</th>" +
-		 					 "<th>" + results[i][5] + "</th>" +
-		 					 "<th>" + results[i][6] + "</th>" +
-		 					 "<th>" + results[i][7] + "</th>" +
-		 					 "<th>" + results[i][8] + "</th>" +
-		 					 "<th>" + results[i][9] + "</th>" +
-		 					 "<th>" + results[i][10] + "</th>" +
-		 					 "<th>" + results[i][11] + "</th>" +
-		 					 "<th>" + results[i][12] + "</th>" + 
+		 					 "<td>" + results[i]['animal']['name']+ "</td>" +
+		 					 "<td>" + results[i]['body_part']['body_part'] + "</td>" +
+		 					 "<td>" + results[i]['quantity'] + "</td>" +
+		 					 "<td>" + results[i]['date_started'] + "</td>" +
+		 					 "<td>" + results[i]['date_closed'] + "</td>" +
+		 					 "<td>" + results[i].source + "</td>" +
+		 					 "<td>" + results[i].division.name + "</td>" +
+		 					 "<td>" + results[i].form + "</td>" +
+		 					 "<td>" + results[i].status  + "</td>" +
+		 					 "<td>" + results[i].priority + "</td>" +
+		 					 "<td>" + results[i].location.address + "</td>" +
+		 					 "<td>" + results[i].complaint_type+ "</td>" +
+		 					 "<td>" + results[i].resolution+ "</td>" + 
 		 					 "</tr>");
 	}
 

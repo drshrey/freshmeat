@@ -5,16 +5,13 @@
     <script type="text/javascript" charset="utf-8">
         var imgDir = '/static/img';
         var animalImages = {
-            'Birds': imgDir + '/bird.png',
             'Chicken': imgDir + '/chicken-hen.jpg',
-            'Dove': imgDir + '/dove.jpg',
             'Pig': imgDir + '/pig.jpg',
             'Pigeon': imgDir + '/pigeon.png',
-            'Rooster': imgDir + '/rooster.png',
-            'Not Specified': imgDir + '/unknown.gif',
-            'Lamb': imgDir + '/lamb.svg',
             'Rat': imgDir + '/rat.jpg',
-            'Goat': imgDir + '/goat.jpg'
+            'Goat': imgDir + '/goat.jpg',
+            'Dog': imgDir + '/dog.jpg',
+            'Cat': imgDir + '/cat.jpg',
         }
 
         $(document).ready(function(){
@@ -27,34 +24,30 @@
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('murder', function(msg) {
-                msg = msg.data
+                msg = JSON.parse(msg.data);
+                console.log(msg);
                 //Parse details
                 var murder = {
-                    animals : msg[1].split("&"),
-                    quantity : msg[2],
-                    body_part_found : msg[3],
-                    date_started : msg[4],
-                    date_closed : msg[5],
-                    source : msg[6],
-                    division : msg[7],
-                    form : msg[8],
-                    status : msg[9],
-                    priority : msg[10],
-                    location : msg[11],
-                    complaint_type : msg[12],
-                    resolution : msg[13]
-                }
+                    animals : msg.animal.name,
+                    quantity : msg.quantity,
+                    body_part_found : msg.body_part.name,
+                    date_started : msg.date_started,
+                    date_closed : msg.date_closed,
+                    source : msg.source,
+                    division : msg.division,
+                    form : msg.form,
+                    status : msg.status,
+                    priority : msg.priority,
+                    location : msg.location.address,
+                    complaint_type : msg.complaint_type,
+                    resolution : msg.resolution
+                    }
+                    console.log(murder);
         murder.location = murder.location.replace(/"/g, "");
                 var imgPart = '';
 
-                for(var i = 0; i < murder.animals.length; i++){
-                    tail = ""
-                    if(i == murder.animals.length - 1)
-                        tail = "></img>"
-                    else
-                        tail = "></img> <b>+<b>"
-                    imgPart += "<img height=10% width=10% src="+animalImages[murder.animals[i]]+ tail;
-                }
+                tail = "></img>";
+                imgPart += "<img height=10% width=10% src="+animalImages[murder.animals]+ tail;
 
                 var description = murder.quantity + ' parts found, ' + murder.body_part_found +
                                 '<div style="position: absolute; left:320px; top:10px;">' + murder.date_started + ' -> ' + murder.date_closed + '</div><p>where: <a href=http://maps.google.com/?q=' + encodeURIComponent(murder.location) + '></p>' +

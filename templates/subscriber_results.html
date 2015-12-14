@@ -1,9 +1,100 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<script type="text/javascript">
-	var results = {{ results|tojson }};
-	console.log(results);
+<h2 style="position:relative; left:46%;"> Dashboard </h2>
+
+<div id="info">
+</div>
+
+
+<div class="container">
+        <div class="dash-row">
+            
+       <h3> Prey List </h3>
+        <div class="dashboard-el" id="prey-list">
+            <div style="overflow: scroll; width:auto;">
+            <table style="position: absolute; top:3%; left:10px;" id="prey" class='table table-bordered'>
+                <thead>
+                    <tr>
+                        <th> Animal </th>
+                        <th> Body Parts Found</th>
+                        <th> Quantity </th>
+                        <th> Date Started </th>
+                        <th> Date Closed </th>
+                        <th> Source </th>
+                        <th> Division </th>
+                        <th> Form </th>
+                        <th> Status </th>
+                        <th> Priority </th>
+                        <th> Location </th>
+                        <th> Complaint Type </th>
+                        <th> Resolution </th>
+                    </tr>
+                </thead>
+                <tbody id="preydata">
+                    <tr>
+                    </tr>
+                </tbody>
+                </table>
+                </div>
+        </div>
+        </div>
+        <div class="dash-row">
+                <div class="dashboard-el" id="neighborhood-watch-list">
+                    <h3 id="dash-head"> Neighboorhood Watch List </h3>
+            <table style="position: absolute; top:3%; left:10px;" id="prey" class='table table-bordered'>
+                <thead>
+                    <tr>
+                        <th> Number </th>
+                        <th> Animal </th>
+                    </tr>
+                    </thead>
+                    <tbody id="nwl">
+                        <tr>
+                        </tr>
+                    </tbody>
+                    </table>
+                    </div>
+        </div>
+        </div>
+
+        <script type="text/javascript">
+
+    var results = {{ results|tojson }};
+console.log(results);
+    $('#info').append(
+            '<h4 style="padding: 5px;"> phone: '+ results.number + '</h4>'
+            + '<h4 style="padding: 5px;"> animal type: ' + results.animal + '</h4>'
+            + '<h4 style="padding: 5px;"> borough: ' + results.borough + '</h4>'
+            );
+    for(var i =0;i < results.prey.length;i++){
+        $('#preydata').append(
+                '<tr' + 
+                '<td>' + results.prey[i]['animal'].name + '</td>' +
+                '<td>' + results.prey[i].body_part.body_part + '</td>' +
+                '<td>' + results.prey[i].quantity + '</td>' +
+                '<td>' + results.prey[i].date_started + '</td>' +
+                '<td>' + results.prey[i].date_closed + '</td>' + 
+                '<td>' + results.prey[i].source + '</td>' +
+                '<td>' + results.prey[i].division.name + '</td>' +
+                '<td>' + results.prey[i].form + '</td>' +
+                '<td>' + results.prey[i].status + '</td>' +
+                '<td>' + results.prey[i].priority + '</td>' +
+                '<td>' + results.prey[i].location.address + "</td>" +
+                '<td>' + results.prey[i].complaint_type + '</td>' +
+                '<td>' + results.prey[i].resolution + '</td>' +
+                '</tr>');
+    }
+
+    for(var i =0; i < results.watchlist; i++){
+        $('#nwl').append(
+                '<tr>' +
+                '<td>' + results.watchlist.number + '</td>' +
+                '<td>' + results.watchlist.animal + '</td>' +
+                '</tr>')
+        }
+
+            
 </script>
 
 

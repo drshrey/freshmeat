@@ -1,10 +1,9 @@
 import csv
 import random
 
-# Globals
-ANIMALS = ["Birds", "Rooster", "Lamb", "Dove&Chicken", "Pigeon", "Pigeon&Pig", "Not Specified", "Rat",
-"Goat","Goat&Rooster&Lamb"]
-BODY_PART_FOUND = ["head", "legs", "head and body", "body without head", 'Left Arm', 'Right Arm', 'Right Leg', 'Left Leg', 'Tail']
+
+ANIMALS = ['Dog', 'Cat', 'Deer', 'Rat', 'Horse', 'Pigeon', 'Chicken', 'Pig']
+BODY_PART_FOUND = ["Left Leg", "Right Leg", "Left Arm/ Wing", 'Right Arm/ Wing', 'Head', 'Torso']
 DIVISION = ["Manhattan", "Brooklyn", "Bronx", "Queens"]
 PRIORITY = ["Normal", "High", "Low"]
 RESOLUTION = ["The Department of Parks and Recreation has completed the requested work order and corrected the problem.",
@@ -29,7 +28,7 @@ def create_entries(numTimes, today=False):
 			month = random.choice(range(1,13))
 			year = random.choice(range(1990, 2016))
 			startDate = datetime.datetime(year, month, day)
-			dateClosed = datetime(year, month, random.choice(range(day, day + 3)))
+			dateClosed = datetime.datetime(year, month, random.choice(range(day, day + 3)))
 		else:
 			now = datetime.datetime.utcnow()
 			day = now.day - 1
@@ -43,13 +42,13 @@ def create_entries(numTimes, today=False):
 			dateClosed = datetime.datetime(year, month, day, random.choice(range(hour+1, hour + 5)), minutes, seconds)
 		
 		# end date		
-		source = "3-1-1 Call Center"
+		source = random.choice(["3-1-1 Call Center", "911"])
 		division = random.choice(DIVISION)
 		form = "DPR General Form"
 		status = "Closed"
 		priority = random.choice(PRIORITY)
 		location = get_google_maps_location(get_random_location(division))
-		complaintType = "Animal in a Park"
+		complaintType = random.choice(["Animal in a Park", "Animal on the street", "Remains on Personal Property"])
 		resolution = random.choice(RESOLUTION)
 		entry = [animal, quantity, bodyPartFound, startDate.strftime("%m/%d/%Y %I:%M:%S"), dateClosed.strftime("%m/%d/%Y %I:%M:%S"), source, "Borough Maintenance Operations Office - " + division, form, status, priority, location, complaintType, resolution]
 		entries.append(entry)
@@ -86,14 +85,14 @@ def get_random_location(division):
 
 def get_google_maps_location(latLonTuple):
 	import requests
-	urlstring = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(latLonTuple[0]) + "," + str(latLonTuple[1]) + "&key=AIzaSyCH4LUsV1b_S9iYRnX6T3Fq9pyJ0_qhXFs" 
+	urlstring = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(latLonTuple[0]) + "," + str(latLonTuple[1]) + "&key=AIzaSyCfXhO6AKpfJzviYOkZcRH-mwpBVloWzNQ" 
 	formatted_address = requests.get(urlstring, verify=True).json()['results'][0]['formatted_address']
 	print str(latLonTuple) + "-->" + formatted_address + "\n"
 	return formatted_address
 
 
 if __name__ == '__main__':
-	entries = create_entries(1000)
+	entries = create_entries(500)
 	with open('test_incidents.csv', 'wb') as ti:
 		writer = csv.writer(ti, delimiter=',')
 		for entry in entries:
