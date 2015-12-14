@@ -225,7 +225,7 @@ def subscribe_user():
         results['subFull'] = subFull
         results['borough'] = subFull['division']['name']
         results['number'] = subFull['number']
-        results['animal'] = subFull['animal']['name']
+        results['animal'] = request.form['animal']
         prey= get_predprey(sub)
         results['prey'] = prey
         print subFull
