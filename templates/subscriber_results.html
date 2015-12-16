@@ -17,18 +17,9 @@
                 <thead>
                     <tr>
                         <th> Animal </th>
-                        <th> Body Parts Found</th>
-                        <th> Quantity </th>
-                        <th> Date Started </th>
-                        <th> Date Closed </th>
-                        <th> Source </th>
                         <th> Division </th>
-                        <th> Form </th>
-                        <th> Status </th>
-                        <th> Priority </th>
                         <th> Location </th>
-                        <th> Complaint Type </th>
-                        <th> Resolution </th>
+                        <th> Body Part </th>
                     </tr>
                 </thead>
                 <tbody id="preydata">
@@ -63,26 +54,17 @@
     var results = {{ results|tojson }};
 console.log(results);
     $('#info').append(
-            '<h4 style="padding: 5px;"> phone: '+ results.number + '</h4>'
-            + '<h4 style="padding: 5px;"> animal type: ' + results.animal + '</h4>'
-            + '<h4 style="padding: 5px;"> borough: ' + results.borough + '</h4>'
+            '<h4 style="padding: 5px;"> phone: '+ results.subFull.number + '</h4>'
+            + '<h4 style="padding: 5px;"> animal type: ' + results.subFull.animal.name + '</h4>'
+            + '<h4 style="padding: 5px;"> borough: ' + results.subFull.division.name+ '</h4>'
             );
     for(var i =0;i < results.prey.length;i++){
         $('#preydata').append(
-                '<tr' + 
-                '<td>' + results.prey[i]['animal'].name + '</td>' +
-                '<td>' + results.prey[i].body_part.body_part + '</td>' +
-                '<td>' + results.prey[i].quantity + '</td>' +
-                '<td>' + results.prey[i].date_started + '</td>' +
-                '<td>' + results.prey[i].date_closed + '</td>' + 
-                '<td>' + results.prey[i].source + '</td>' +
-                '<td>' + results.prey[i].division.name + '</td>' +
-                '<td>' + results.prey[i].form + '</td>' +
-                '<td>' + results.prey[i].status + '</td>' +
-                '<td>' + results.prey[i].priority + '</td>' +
-                '<td>' + results.prey[i].location.address + "</td>" +
-                '<td>' + results.prey[i].complaint_type + '</td>' +
-                '<td>' + results.prey[i].resolution + '</td>' +
+                '<tr>' + 
+                '<td>' + results.prey[i]['animal']+ '</td>' +
+                '<td>' + results.prey[i].division+ '</td>' +
+                '<td>' + results.prey[i].location+ "</td>" +
+                '<td>' + results.prey[i].body_part+ '</td>' +
                 '</tr>');
     }
 

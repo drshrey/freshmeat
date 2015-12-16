@@ -131,7 +131,6 @@ def subscribe_user():
     }
     
     def get_full_subscriber(sub):
-        sub = FullSubscriber.get(FullSubscriber.subscriber)
         return {
                 "number": sub.subscriber.number,
                 "animal": {
@@ -153,34 +152,15 @@ def subscribe_user():
 
     import json
     import datetime
-    def get_predprey(sub):
-        FORMAT = "%m/%d/%Y %I:%M:%S"
-        fs = FullSubscriber.get(FullSubscriber.subscriber == sub)
-        prey = PredPrey.select().where(PredPrey.predAnimal == fs.animal)
-        preyRecords = []
-        predRecords = []
-        for p in prey:
-            qry = FullMurder.select().where(FullMurder.animal == p)
-            for x in qry:
-                fm = { 
-                "animal": {'name': x.animal.name},
-                "division": {'name':x.division.name},
-                "location": {'address': x.location.address},
-                "body_part": {'body_part': x.body_part.name},
-                "quantity": x.murder.quantity,
-                "date_started": json.dumps(x.murder.date_started.strftime(FORMAT)),
-                "date_closed": json.dumps(x.murder.date_closed.strftime(FORMAT)),
-                "source": x.murder.source,
-                "form": x.murder.status,
-                "status": x.murder.status,
-                "priority": x.murder.priority,
-                "complaint_type": x.murder.complaint_type,
-                "resolution": x.murder.resolution
-                }
-                preyRecords.append(fm)
- 
-        
-        return preyRecords
+    def get_predprey(x):
+        fm = { 
+            "animal": x.animal.name,
+            "division": x.division.name,
+            "location": x.location.address,
+            "body_part":x.body_part.name
+        }
+        print fm
+        return fm
 
 
     if request.method == "POST":
@@ -215,19 +195,6 @@ def subscribe_user():
             fs.save()
         except peewee.IntegrityError:
             return render_template("error.html", error="Duplicate Phone Number. Pick Another One.")
-        sub = Subscriber.get(Subscriber.number == request.form['number'])
-        subFull = get_full_subscriber(sub)
-        wl = get_neighborhood_wl(sub)
-        wlSubs = [get_full_subscriber(x) for x in wl]
-        results['watchlist'] = wlSubs
-        results['subFull'] = subFull
-        results['borough'] = subFull['division']['name']
-        results['number'] = subFull['number']
-        results['animal'] = request.form['animal']
-        prey= get_predprey(sub)
-        results['prey'] = prey
-        print subFull
-        print wl
     if request.method == 'GET':
         sub = None
         print request.args.get('number')
@@ -236,25 +203,19 @@ def subscribe_user():
             sub = Subscriber.get(Subscriber.number== phonenumber)
         except:
             return render_template('error.html', error='Number does not exist. Subscribe by going to subscribe page and registering!')
-        subFull = get_full_subscriber(sub)
-        wl = get_neighborhood_wl(sub)
-        print subFull
-        print wl
-        wl_subs = []
-        if wl:
-            for i in wl:
-                if i.subscriber.number != sub.number:
-                    wl_subs.append(get_full_subscriber(i))
-        results['watchlist'] = wl_subs
-        results['subFull'] = subFull
-        results['borough'] = subFull['division']['name']
-        results['number'] = subFull['number']
-        results['animal'] = subFull['animal']['name']
-        prey= get_predprey(sub)
-        results['prey'] = prey
-        print results['prey']
+        fs = FullSubscriber.get(FullSubscriber.subscriber == sub)
+        prey = [x.preyAnimal for x in PredPrey.select(PredPrey, Animal).join(Animal).where(PredPrey.predAnimal == fs.animal)]
 
-
+        preyMurders = []
+        for p in prey:
+            q = FullMurder.select(FullMurder, Animal, Division, Location, BodyPart).join(Animal).switch(FullMurder).join(Division).switch(FullMurder).join(Location).switch(FullMurder).join(BodyPart).where(FullMurder.animal == p and FullMurder.division == fs.division)
+            preyMurders.extend([x for x in q])
+        watchlist = FullSubscriber.select(FullSubscriber, Subscriber, Animal, BodyPart, Division).join(Subscriber).switch(FullSubscriber).join(Animal).switch(FullSubscriber).join(BodyPart).switch(FullSubscriber).join(Division).where(FullSubscriber.division == fs.division and FullSubscriber.subscriber != fs.subscriber)
+        results['prey'] = [get_predprey(pm) for pm in preyMurders]
+        results['watchlist'] = [get_full_subscriber(sub) for sub in watchlist]
+        results['subFull'] = get_full_subscriber(fs)
+        results['borough'] = fs.division.name
+        results['number'] = fs.subscriber.number
     return render_template("subscriber_results.html", results=results)
 
 @app.route('/query', methods=['GET'])
