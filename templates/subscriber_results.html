@@ -31,7 +31,7 @@
         </div>
         </div>
         <div class="dash-row">
-                <div class="dashboard-el" id="neighborhood-watch-list">
+                <div style="overflow: scroll;"class="dashboard-el" id="neighborhood-watch-list">
                     <h3 id="dash-head"> Neighboorhood Watch List </h3>
             <table style="position: absolute; top:3%;width: 500px;" id="prey" class='table table-bordered'>
                 <thead>
@@ -72,7 +72,7 @@ console.log(results);
         $('#nwl').append(
                 '<tr>' +
                 '<td><b>' + results.watchlist[i].animal.name + '</b></td>' +
-                '<td><b>' + results.watchlist[i].number + '</b></td>' +
+                '<td>' + results.watchlist[i].number + '</td>' +
                 '</tr>')
         }
 
