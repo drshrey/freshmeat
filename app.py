@@ -243,7 +243,19 @@ def query_request():
     left = "Left" + bodypart
     right = "Right" + bodypart
 
-    query = FullMurder.select(FullMurder, Animal, Location, Division, BodyPart, Murder).join(Animal).switch(FullMurder).join(Location).switch(FullMurder).join(Division).switch(FullMurder).join(BodyPart).switch(FullMurder).join(Murder).switch(FullMurder).where((Animal.name == animal) & (BodyPart.name == left) | (Animal.name == animal) & (BodyPart.name == right)).aggregate_rows()
+    query = FullMurder.select(FullMurder, Animal, Location, Division, BodyPart, Murder).join(Animal).switch(FullMurder).join(Location).switch(FullMurder).join(Division).switch(FullMurder).join(BodyPart).switch(FullMurder).join(Murder).switch(FullMurder).where((Animal.name != animal) & (BodyPart.name == left) | (Animal.name == animal) & (BodyPart.name == right)).aggregate_rows()
+
+    best_locations= FullMurder.select(FullMurder, Animal, Location, Division, BodyPart, Murder).join(Animal).switch(FullMurder).join(Location).switch(FullMurder).join(Division).switch(FullMurder).join(BodyPart).switch(FullMurder).join(Murder).switch(FullMurder).where((Animal.name != animal) & (BodyPart.name == left) | (Animal.name != animal) & (BodyPart.name == right)).aggregate_rows()
+    '''
+    division_count = {}
+    for l in best_locations:
+        if location_count[l.division.name]:
+            location_count[l.division.name] += 1
+        else:
+            location_count[l.division.name] = 1
+    best_location = 
+    '''
+
     # Query all records related to the animal
     full_murders = [get_full_murder(am) for am in query]
     # Query all records related to the body part and get the borough with the most of that leg type
