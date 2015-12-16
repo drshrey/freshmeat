@@ -58,12 +58,13 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 
-def get_full_murder(murder):
+import datetime
+import json
+from peewee import *
+import random
 
-    fm= FullMurder.get(FullMurder.murder == murder)
 
-    import datetime
-    import json
+def get_full_murder(fm):
     date_handler = lambda obj: (
         obj.isoformat()
         if isinstance(obj, datetime.datetime)
@@ -94,10 +95,7 @@ def background_thread():
     count = 0
     while True:
         time.sleep(3)
-        # Make random entry         
-        from peewee import *
-        import random
-        import json
+        # Make random entry  
         randMurder= random.choice([x for x in Murder.select()])
         randMurderJson = json.dumps(get_full_murder(randMurder))
         socketio.emit('murder',
@@ -275,13 +273,11 @@ def query_request():
     animal = request.args.get('animal')
     bodypart = request.args.get('bodypart')
 
+    query = FullMurder.select(FullMurder, Animal, Location, Division, BodyPart, Murder).join(Animal).switch(FullMurder).join(Location).switch(FullMurder).join(Division).switch(FullMurder).join(BodyPart).switch(FullMurder).join(Murder).switch(FullMurder).where(Animal.name == animal).aggregate_rows()
     left= "Left"
     right = "Right"
-
     # Query all records related to the animal
-    animal = Animal.select().where(Animal.name == animal).get()
-    fm_models = FullMurder.select().where(FullMurder.animal == animal)
-    full_murders = [get_full_murder(am.murder) for am in fm_models]
+    full_murders = [get_full_murder(am) for am in query]
     # Query all records related to the body part and get the borough with the most of that leg type
     return render_template('results.html', queries=full_murders)
 
