@@ -72,7 +72,7 @@ console.log(results);
         $('#nwl').append(
                 '<tr>' +
                 '<td><b>' + results.watchlist[i].animal.name + '</b></td>' +
-                '<td>' + results.watchlist[i].number + '</td>' +
+                '<td><a href=/subscribe_user?number='+ results.watchlist[i].number  +'>' +  results.watchlist[i].number + '</a></td>' +
                 '</tr>')
         }
 
