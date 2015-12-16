@@ -33,11 +33,11 @@
         <div class="dash-row">
                 <div class="dashboard-el" id="neighborhood-watch-list">
                     <h3 id="dash-head"> Neighboorhood Watch List </h3>
-            <table style="position: absolute; top:3%; left:10px;" id="prey" class='table table-bordered'>
+            <table style="position: absolute; top:3%;width: 500px;" id="prey" class='table table-bordered'>
                 <thead>
                     <tr>
-                        <th> Number </th>
                         <th> Animal </th>
+                        <th> Number </th>
                     </tr>
                     </thead>
                     <tbody id="nwl">
@@ -68,11 +68,11 @@ console.log(results);
                 '</tr>');
     }
 
-    for(var i =0; i < results.watchlist; i++){
+    for(var i =0; i < results.watchlist.length; i++){
         $('#nwl').append(
                 '<tr>' +
-                '<td>' + results.watchlist.number + '</td>' +
-                '<td>' + results.watchlist.animal + '</td>' +
+                '<td><b>' + results.watchlist[i].animal.name + '</b></td>' +
+                '<td><b>' + results.watchlist[i].number + '</b></td>' +
                 '</tr>')
         }
 
