@@ -217,7 +217,7 @@ def subscribe_user():
         for p in prey:
             q = FullMurder.select(FullMurder, Animal, Division, Location, BodyPart).join(Animal).switch(FullMurder).join(Division).switch(FullMurder).join(Location).switch(FullMurder).join(BodyPart).where(FullMurder.animal == p and FullMurder.division == fs.division)
             preyMurders.extend([x for x in q])
-        watchlist = FullSubscriber.select(FullSubscriber, Subscriber, Animal, BodyPart, Division).join(Subscriber).switch(FullSubscriber).join(Animal).switch(FullSubscriber).join(BodyPart).switch(FullSubscriber).join(Division).where(FullSubscriber.division == fs.division and FullSubscriber.subscriber != fs.subscriber)
+        watchlist = FullSubscriber.select(FullSubscriber, Subscriber, Animal, BodyPart, Division).join(Subscriber).switch(FullSubscriber).join(Animal).switch(FullSubscriber).join(BodyPart).switch(FullSubscriber).join(Division).where(FullSubscriber.subscriber != fs.subscriber, FullSubscriber.division == fs.division)
         results['prey'] = [get_predprey(pm) for pm in preyMurders]
         results['watchlist'] = [get_full_subscriber(sub) for sub in watchlist]
         results['subFull'] = get_full_subscriber(fs)
