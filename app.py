@@ -272,10 +272,10 @@ def advanced_query_request():
 def query_request():
     animal = request.args.get('animal')
     bodypart = request.args.get('bodypart')
+    left = "Left" + bodypart
+    right = "Right" + bodypart
 
-    query = FullMurder.select(FullMurder, Animal, Location, Division, BodyPart, Murder).join(Animal).switch(FullMurder).join(Location).switch(FullMurder).join(Division).switch(FullMurder).join(BodyPart).switch(FullMurder).join(Murder).switch(FullMurder).where(Animal.name == animal).aggregate_rows()
-    left= "Left"
-    right = "Right"
+    query = FullMurder.select(FullMurder, Animal, Location, Division, BodyPart, Murder).join(Animal).switch(FullMurder).join(Location).switch(FullMurder).join(Division).switch(FullMurder).join(BodyPart).switch(FullMurder).join(Murder).switch(FullMurder).where((Animal.name == animal) & (BodyPart.name == left) | (Animal.name == animal) & (BodyPart.name == right)).aggregate_rows()
     # Query all records related to the animal
     full_murders = [get_full_murder(am) for am in query]
     # Query all records related to the body part and get the borough with the most of that leg type
