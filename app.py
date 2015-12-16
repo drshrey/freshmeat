@@ -96,7 +96,7 @@ def background_thread():
     while True:
         time.sleep(3)
         # Make random entry  
-        randMurder= random.choice([x for x in Murder.select()])
+        randMurder= random.choice([x for x in FullMurder.select()])
         randMurderJson = json.dumps(get_full_murder(randMurder))
         socketio.emit('murder',
                       {'data': randMurderJson},
