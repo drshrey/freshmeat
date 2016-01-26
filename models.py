@@ -1,15 +1,10 @@
+''' MySQL Related '''
 from peewee import *
-AWS_MYSQL_USER = ""
-AWS_MYSQL_PASSWORD = ""
 
-with open('creds.txt') as f:
-    credentials = [x.strip().split(':') for x in f.readlines()]
-    for username, password in credentials:
-        AWS_MYSQL_USER = str(username)
-        AWS_MYSQL_PASSWORD = str(password)
+''' User Related '''
+from lib import getCreds
 
-
-#animalsDB = MySQLDatabase("animals", host="freshmeat.c3ne5kfmg1jo.us-west-2.rds.amazonaws.com", port=3306, user=AWS_MYSQL_USER, passwd=AWS_MYSQL_PASSWORD)
+AWS_MYSQL_USER, AWS_MYSQL_PASSWORD = getCreds()
 animalsDB = MySQLDatabase("animals2", host="freshmeat.c3ne5kfmg1jo.us-west-2.rds.amazonaws.com", port=3306, user=AWS_MYSQL_USER, passwd=AWS_MYSQL_PASSWORD)
 
 class Animals2DBModel(Model):
@@ -39,8 +34,6 @@ class Murder(Animals2DBModel):
     priority = TextField()
     complaint_type=TextField()
     resolution = TextField()
-
-
 
 class AnimalMurder(Animals2DBModel):
     animal = ForeignKeyField(Animal, related_name='animal_murder')
@@ -89,8 +82,3 @@ class SubscriberBodyPart(Animals2DBModel):
 class SubscriberDivision(Animals2DBModel):
     subscriber = ForeignKeyField(Subscriber, related_name='subscriber_division')
     division = ForeignKeyField(Division, related_name='subscriber_division')
-
-#animalsDB.create_tables([FullSubscriber, FullMurder])
-#animalsDB.create_tables([AnimalMurder, DivisionMurder, LocationMurder])
-#animalsDB.create_tables([Subscriber, Animal, Murder, Division, BodyPart, PredPrey, Location, SubscriberAnimal,
- #   SubscriberBodyPart, SubscriberDivision])

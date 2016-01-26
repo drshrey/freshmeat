@@ -11,8 +11,10 @@ RESOLUTION = ["The Department of Parks and Recreation has completed the requeste
 			  "The condition was determined to be an issue appropriate for handling by an alternate entity. The Department of Parks and Recreation has notified the appropriate resource."]
 
 
-
-def create_entries(numTimes, today=False):
+'''createEntries returns x number of randomly generated entries,
+   and the startDate depends on whether today is True or False
+'''
+def createEntries(numTimes, today=False):
 	entries = []
 	for i in xrange(numTimes):
 		animal = random.choice(ANIMALS)
@@ -47,20 +49,17 @@ def create_entries(numTimes, today=False):
 		form = "DPR General Form"
 		status = "Closed"
 		priority = random.choice(PRIORITY)
-		location = get_google_maps_location(get_random_location(division))
+		location = getGoogleMapsLocation(getRandomLocation(division))
 		complaintType = random.choice(["Animal in a Park", "Animal on the street", "Remains on Personal Property"])
 		resolution = random.choice(RESOLUTION)
 		entry = [animal, quantity, bodyPartFound, startDate.strftime("%m/%d/%Y %I:%M:%S"), dateClosed.strftime("%m/%d/%Y %I:%M:%S"), source, "Borough Maintenance Operations Office - " + division, form, status, priority, location, complaintType, resolution]
 		entries.append(entry)
 	return entries
 
-def drange(start, stop, step):
-	r = start
-	while r < stop:
-		yield r
-		r += step
-
-def get_random_location(division):
+'''getRandomLocation returns a randomly generated location
+   in four of the five boroughs of NYC
+'''
+def getRandomLocation(division):
 	import numpy as np
 	# Brooklyn : 40.649848 +- .01, -73.945694 +- 0.01
 	# Queens : 40.692597 +- 0.01, -73.806657 +- 0.01
@@ -83,7 +82,10 @@ def get_random_location(division):
 		lon = -1 * random.choice(np.arange(73.879345, 73.889345, 0.000001))
 	return (lat, lon)
 
-def get_google_maps_location(latLonTuple):
+'''getGoogleMapsLocation takes in a latitude, longitude
+   and returns the street address of the points.
+'''
+def getGoogleMapsLocation(latLonTuple):
 	import requests
 	urlstring = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(latLonTuple[0]) + "," + str(latLonTuple[1]) + "&key=AIzaSyCfXhO6AKpfJzviYOkZcRH-mwpBVloWzNQ" 
 	formatted_address = requests.get(urlstring, verify=True).json()['results'][0]['formatted_address']
@@ -92,7 +94,7 @@ def get_google_maps_location(latLonTuple):
 
 
 if __name__ == '__main__':
-	entries = create_entries(500)
+	entries = createEntries(500)
 	with open('test_incidents.csv', 'wb') as ti:
 		writer = csv.writer(ti, delimiter=',')
 		for entry in entries:
